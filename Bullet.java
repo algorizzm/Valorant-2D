@@ -2,7 +2,7 @@ import java.awt.*;
 
 public class Bullet {
 	private double x, y;
-	private final double speed = 21;
+	private final double speed = 40;
 	private final int size = 6;
 	private final double dx, dy;
 
@@ -24,7 +24,7 @@ public class Bullet {
 
 	// Draw the bullet
 	public void draw(Graphics g) {
-		g.setColor(Color.RED);
+		g.setColor(Color.YELLOW);
 		g.fillOval((int) x - size / 2, (int) y - size / 2, size, size);
 	}
 

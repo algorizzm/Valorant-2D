@@ -1,11 +1,14 @@
 import java.awt.*;
 
 public class Player {
-	private int x, y;
+	int x;
+	private int y;
 	private final int SIZE = 40;
-	private final int SPEED = 5;
+	private final int SPEED = 3;
 	private Rectangle bounds;
 	private Tile[][] map; // <-- store the tilemap here
+	private int lastX, lastY;
+
 
 	public Player(int x, int y, Tile[][] map) {
 		this.x = x;
@@ -15,28 +18,38 @@ public class Player {
 	}
 
 	public void move(boolean up, boolean down, boolean left, boolean right) {
-		int dx = 0, dy = 0;
-		if (up)
-			dy -= SPEED;
-		if (down)
-			dy += SPEED;
-		if (left)
-			dx -= SPEED;
-		if (right)
-			dx += SPEED;
+	    int dx = 0, dy = 0;
+	    if (up)
+	        dy -= SPEED;
+	    if (down)
+	        dy += SPEED;
+	    if (left)
+	        dx -= SPEED;
+	    if (right)
+	        dx += SPEED;
 
-		// Check horizontal movement
-		if (!collidesWithWall(x + dx, y)) {
-			x += dx;
-		}
+	    // Store the previous position
+	    lastX = x;
+	    lastY = y;
 
-		// Check vertical movement
-		if (!collidesWithWall(x, y + dy)) {
-			y += dy;
-		}
+	    // Check horizontal movement
+	    if (!collidesWithWall(x + dx, y)) {
+	        x += dx;
+	    }
 
-		bounds.setLocation(x, y);
+	    // Check vertical movement
+	    if (!collidesWithWall(x, y + dy)) {
+	        y += dy;
+	    }
+
+	    bounds.setLocation(x, y);
 	}
+
+	
+	public boolean isMoving() {
+	    return x != lastX || y != lastY;
+	}
+
 
 	private boolean collidesWithWall(int nextX, int nextY) {
 		Rectangle nextBounds = new Rectangle(nextX, nextY, SIZE, SIZE);
@@ -53,7 +66,7 @@ public class Player {
 	}
 
 	public void draw(Graphics g) {
-		g.setColor(Color.BLUE);
+		g.setColor(Color.WHITE);
 		g.fillRect(x, y, SIZE, SIZE);
 	}
 
@@ -63,5 +76,10 @@ public class Player {
 
 	public int getY() {
 		return y + SIZE / 2;
+	}
+
+	// Empty tick method to prevent errors
+	public void tick(boolean up, boolean down, boolean left, boolean right) {
+		move(up, down, left, right);
 	}
 }
